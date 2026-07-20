@@ -36,8 +36,8 @@ export function Layout() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
-      <header className="flex items-center justify-between border-b border-gray-200 px-4 py-4">
+    <div className="flex min-h-screen flex-col bg-white">
+      <header className="flex shrink-0 items-center justify-between border-b border-gray-200 px-4 py-4">
         <Link to="/" className="flex items-center gap-2">
           <ArchiveBoxIcon className="h-6 w-6" />
           <span className="text-xl font-semibold">Archivy</span>
@@ -81,7 +81,7 @@ export function Layout() {
           )}
         </div>
       </header>
-      <main className="p-4">
+      <main className="flex flex-1 flex-col p-4">
         <Outlet />
       </main>
     </div>

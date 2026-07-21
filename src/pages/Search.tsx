@@ -76,15 +76,15 @@ export function Search() {
         value={query}
         onChange={(event) => setQuery(event.target.value)}
         placeholder="영화 제목을 검색하세요"
-        className="w-full rounded border border-gray-300 px-4 py-2.5 text-sm focus:border-gray-400 focus:outline-none"
+        className="w-full rounded border border-gray-700 bg-gray-800 px-4 py-2.5 text-sm text-gray-100 placeholder:text-gray-500 focus:border-gray-500 focus:outline-none"
       />
 
-      {isLoading && <p className="mt-6 text-sm text-gray-500">검색 중...</p>}
+      {isLoading && <p className="mt-6 text-sm text-gray-400">검색 중...</p>}
       {isError && (
-        <p className="mt-6 text-sm text-red-500">검색에 실패했습니다.</p>
+        <p className="mt-6 text-sm text-red-400">검색에 실패했습니다.</p>
       )}
       {!isLoading && debouncedQuery && movies.length === 0 && (
-        <p className="mt-6 text-sm text-gray-500">검색 결과가 없습니다.</p>
+        <p className="mt-6 text-sm text-gray-400">검색 결과가 없습니다.</p>
       )}
 
       {movies.length > 0 && (
@@ -93,7 +93,7 @@ export function Search() {
             <div key={movie.id} className="flex flex-col">
               <Link
                 to={`/movie/${movie.id}`}
-                className="block aspect-2/3 overflow-hidden rounded-lg bg-gray-100"
+                className="block aspect-2/3 overflow-hidden rounded-lg bg-gray-800"
               >
                 {movie.posterUrl ? (
                   <img
@@ -102,7 +102,7 @@ export function Search() {
                     className="h-full w-full object-cover"
                   />
                 ) : (
-                  <div className="flex h-full w-full items-center justify-center text-xs text-gray-400">
+                  <div className="flex h-full w-full items-center justify-center text-xs text-gray-500">
                     포스터 없음
                   </div>
                 )}
@@ -111,7 +111,7 @@ export function Search() {
               <div className="mt-2 flex items-start justify-between gap-2">
                 <Link
                   to={`/movie/${movie.id}`}
-                  className="truncate text-sm font-medium text-gray-900"
+                  className="truncate text-sm font-medium text-gray-100"
                 >
                   {movie.title}
                 </Link>
@@ -133,7 +133,7 @@ export function Search() {
       )}
 
       {isFetchingNextPage && (
-        <p className="mt-6 text-sm text-gray-500">불러오는 중...</p>
+        <p className="mt-6 text-sm text-gray-400">불러오는 중...</p>
       )}
       <div ref={sentinelRef} />
     </div>

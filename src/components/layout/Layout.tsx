@@ -36,8 +36,8 @@ export function Layout() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col bg-white">
-      <header className="flex shrink-0 items-center justify-between border-b border-gray-200 px-4 py-4">
+    <div className="flex min-h-screen flex-col bg-gray-900 text-gray-100">
+      <header className="flex shrink-0 items-center justify-between border-b border-gray-800 px-4 py-4">
         <Link to="/" className="flex items-center gap-2">
           <ArchiveBoxIcon className="h-6 w-6" />
           <span className="text-xl font-semibold">Archivy</span>
@@ -61,10 +61,10 @@ export function Layout() {
                 />
               </button>
               {isMenuOpen && (
-                <div className="absolute right-0 mt-2 w-32 rounded border border-gray-200 bg-white shadow-md">
+                <div className="absolute right-0 mt-2 w-32 rounded border border-gray-700 bg-gray-800 shadow-md">
                   <button
                     onClick={handleLogout}
-                    className="w-full cursor-pointer px-4 py-2 text-left text-sm hover:bg-gray-50"
+                    className="w-full cursor-pointer px-4 py-2 text-left text-sm hover:bg-gray-700"
                   >
                     로그아웃
                   </button>
@@ -74,7 +74,7 @@ export function Layout() {
           ) : (
             <button
               onClick={handleGoogleLogin}
-              className="cursor-pointer rounded border border-gray-300 px-3 py-1.5 text-sm font-medium hover:bg-gray-50"
+              className="cursor-pointer rounded border border-gray-700 px-3 py-1.5 text-sm font-medium hover:bg-gray-800"
             >
               로그인
             </button>

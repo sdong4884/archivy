@@ -7,6 +7,7 @@ import { Home } from "./pages/Home";
 import { Search } from "./pages/Search";
 import { MovieDetail } from "./pages/MovieDetail";
 import { MovieModify } from "./pages/MovieModify";
+import { Wishlist } from "./pages/Wishlist";
 import { auth } from "./lib/firebase";
 import { useAuthStore } from "./store/authStore";
 
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
       {
         path: "/movie/:id/modify",
         element: <MovieModify />,
+      },
+      {
+        path: "/wishlist",
+        element: <Wishlist />,
       },
     ],
   },

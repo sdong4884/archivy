@@ -16,3 +16,17 @@ export interface MovieDetail {
   voteAverage: number;
   genres: string[];
 }
+
+export interface WishlistItem {
+  id: number;
+  title: string;
+  posterUrl: string | null;
+}
+
+export interface Entry {
+  id: number;
+  title: string;
+  posterUrl: string | null;
+  rating: number;
+  comment: string;
+}

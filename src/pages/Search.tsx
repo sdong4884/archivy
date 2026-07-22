@@ -1,16 +1,16 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { HeartIcon as HeartOutlineIcon } from "@heroicons/react/24/outline";
-import { HeartIcon as HeartSolidIcon } from "@heroicons/react/24/solid";
 import { searchMovies } from "../lib/api/tmdb";
+import { useWishlist } from "../hooks/useWishlist";
+import { MovieCard } from "../components/movie/MovieCard";
 
 export function Search() {
   const [searchParams, setSearchParams] = useSearchParams();
   const initialQuery = searchParams.get("q") ?? "";
   const [query, setQuery] = useState(initialQuery);
   const [debouncedQuery, setDebouncedQuery] = useState(initialQuery);
-  const [likedIds, setLikedIds] = useState<Set<number>>(new Set());
+  const { likedIds, toggleWishlist } = useWishlist();
 
   useEffect(() => {
     const timer = setTimeout(() => setDebouncedQuery(query.trim()), 400);
@@ -57,18 +57,6 @@ export function Search() {
     return () => observer.disconnect();
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-  const toggleLike = (id: number) => {
-    setLikedIds((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) {
-        next.delete(id);
-      } else {
-        next.add(id);
-      }
-      return next;
-    });
-  };
-
   return (
     <div>
       <input
@@ -90,44 +78,12 @@ export function Search() {
       {movies.length > 0 && (
         <div className="mt-6 grid grid-cols-[repeat(auto-fill,minmax(210px,1fr))] gap-6">
           {movies.map((movie) => (
-            <div key={movie.id} className="flex flex-col">
-              <Link
-                to={`/movie/${movie.id}`}
-                className="block aspect-2/3 overflow-hidden rounded-lg bg-gray-800"
-              >
-                {movie.posterUrl ? (
-                  <img
-                    src={movie.posterUrl}
-                    alt={movie.title}
-                    className="h-full w-full object-cover"
-                  />
-                ) : (
-                  <div className="flex h-full w-full items-center justify-center text-xs text-gray-500">
-                    포스터 없음
-                  </div>
-                )}
-              </Link>
-
-              <div className="mt-2 flex items-start justify-between gap-2">
-                <Link
-                  to={`/movie/${movie.id}`}
-                  className="truncate text-sm font-medium text-gray-100"
-                >
-                  {movie.title}
-                </Link>
-                <button
-                  onClick={() => toggleLike(movie.id)}
-                  aria-label="찜하기"
-                  className="shrink-0 cursor-pointer"
-                >
-                  {likedIds.has(movie.id) ? (
-                    <HeartSolidIcon className="h-5 w-5 text-red-500" />
-                  ) : (
-                    <HeartOutlineIcon className="h-5 w-5 text-gray-400" />
-                  )}
-                </button>
-              </div>
-            </div>
+            <MovieCard
+              key={movie.id}
+              movie={movie}
+              isLiked={likedIds.has(movie.id)}
+              onToggleLike={() => toggleWishlist(movie)}
+            />
           ))}
         </div>
       )}

@@ -1,14 +1,14 @@
-import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { HeartIcon as HeartOutlineIcon } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartSolidIcon } from "@heroicons/react/24/solid";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import { getMovieDetail } from "../lib/api/tmdb";
+import { useWishlist } from "../hooks/useWishlist";
 
 export function MovieDetail() {
   const { id } = useParams();
-  const [isLiked, setIsLiked] = useState(false);
+  const { likedIds, toggleWishlist } = useWishlist();
 
   const {
     data: movie,
@@ -66,11 +66,17 @@ export function MovieDetail() {
             </h1>
             <div className="flex shrink-0 items-center gap-3">
               <button
-                onClick={() => setIsLiked((prev) => !prev)}
+                onClick={() =>
+                  toggleWishlist({
+                    id: movie.id,
+                    title: movie.title,
+                    posterUrl: movie.posterUrl,
+                  })
+                }
                 aria-label="찜하기"
                 className="cursor-pointer"
               >
-                {isLiked ? (
+                {likedIds.has(movie.id) ? (
                   <HeartSolidIcon className="h-6 w-6 text-red-500" />
                 ) : (
                   <HeartOutlineIcon className="h-6 w-6 text-white" />

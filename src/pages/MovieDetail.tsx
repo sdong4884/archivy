@@ -42,8 +42,8 @@ export function MovieDetail() {
         </div>
       )}
 
-      <div className="relative flex flex-col gap-6 p-6 sm:flex-row sm:p-10">
-        <div className="w-40 shrink-0 self-center sm:w-56 sm:self-start">
+      <div className="relative mx-auto flex max-w-[1000px] flex-col gap-6 p-6 sm:flex-row sm:p-10 lg:px-16">
+        <div className="w-40 shrink-0 self-center sm:w-70 sm:self-start">
           <div className="aspect-2/3 overflow-hidden rounded-lg bg-gray-800 shadow-lg">
             {movie.posterUrl ? (
               <img
@@ -93,9 +93,7 @@ export function MovieDetail() {
           </div>
 
           <div className="mt-4 flex flex-wrap gap-x-6 gap-y-1 text-sm text-gray-300">
-            {movie.releaseDate && (
-              <span>개봉일 | {movie.releaseDate}</span>
-            )}
+            {movie.releaseDate && <span>개봉일 | {movie.releaseDate}</span>}
             <span>평점 | {movie.voteAverage.toFixed(1)}</span>
             {movie.runtime > 0 && <span>러닝타임 | {movie.runtime}분</span>}
           </div>

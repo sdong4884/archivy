@@ -58,7 +58,7 @@ export function Search() {
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   return (
-    <div>
+    <>
       <input
         type="text"
         value={query}
@@ -72,7 +72,9 @@ export function Search() {
         <p className="mt-6 text-sm text-red-400">검색에 실패했습니다.</p>
       )}
       {!isLoading && debouncedQuery && movies.length === 0 && (
-        <p className="mt-6 text-sm text-gray-400">검색 결과가 없습니다.</p>
+        <p className="flex flex-1 flex-col items-center justify-center mt-6 text-sm text-gray-400">
+          검색 결과가 없습니다.
+        </p>
       )}
 
       {movies.length > 0 && (
@@ -92,6 +94,6 @@ export function Search() {
         <p className="mt-6 text-sm text-gray-400">불러오는 중...</p>
       )}
       <div ref={sentinelRef} />
-    </div>
+    </>
   );
 }

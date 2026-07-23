@@ -2,7 +2,10 @@ import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { StarIcon } from "@heroicons/react/24/solid";
-import { PencilSquareIcon } from "@heroicons/react/24/outline";
+import {
+  ArchiveBoxXMarkIcon,
+  PencilSquareIcon,
+} from "@heroicons/react/24/outline";
 import { getEntries } from "../lib/entries";
 import { useAuthStore } from "../store/authStore";
 
@@ -43,19 +46,36 @@ export function Home() {
   }, [entries, sortOption]);
 
   if (!user) {
-    return <p className="text-sm text-gray-400">로그인이 필요합니다.</p>;
+    return (
+      <div className="flex flex-1 flex-col items-center justify-center text-sm text-gray-400">
+        로그인이 필요합니다.
+      </div>
+    );
   }
 
   if (isLoading) {
-    return <p className="text-sm text-gray-400">불러오는 중...</p>;
+    return (
+      <div className="flex flex-1 flex-col items-center justify-center text-sm text-gray-400">
+        불러오는 중...
+      </div>
+    );
   }
 
   if (isError) {
-    return <p className="text-sm text-red-400">기록을 불러오지 못했습니다.</p>;
+    return (
+      <div className="flex flex-1 flex-col items-center justify-center text-sm text-red-400">
+        기록을 불러오지 못했습니다.
+      </div>
+    );
   }
 
   if (!entries || entries.length === 0) {
-    return <p className="text-sm text-gray-400">기록한 영화가 없습니다.</p>;
+    return (
+      <div className="flex flex-1 flex-col items-center justify-center gap-2 text-gray-400">
+        <ArchiveBoxXMarkIcon className="h-12 w-12" />
+        <p className="text-sm">기록이 아직 없습니다.</p>
+      </div>
+    );
   }
 
   return (

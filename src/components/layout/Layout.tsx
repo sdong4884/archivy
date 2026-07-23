@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
-import { ArchiveBoxIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import {
+  ArchiveBoxIcon,
+  MagnifyingGlassIcon,
+} from "@heroicons/react/24/outline";
 import { signInWithPopup, signOut } from "firebase/auth";
 import { auth, googleProvider } from "../../lib/firebase";
 import { useAuthStore } from "../../store/authStore";
@@ -50,7 +53,7 @@ export function Layout() {
           </Link>
 
           {user ? (
-            <div className="relative" ref={menuRef}>
+            <div className="relative flex" ref={menuRef}>
               <button
                 onClick={() => setIsMenuOpen((open) => !open)}
                 className="cursor-pointer"

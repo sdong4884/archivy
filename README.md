@@ -1,73 +1,46 @@
-# React + TypeScript + Vite
+# Archivy
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+영화 검색 후 관심 등록·기록을 남기는 개인 영화 트래커
 
-Currently, two official plugins are available:
+## 데모
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+🔗 https://archivy-delta.vercel.app/
 
-## React Compiler
+<!-- 스크린샷 추가: 홈/검색/상세/찜 목록 화면 캡처를 여기에 삽입하세요 -->
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 주요 기능
 
-## Expanding the ESLint configuration
+- **Google 로그인** — Firebase Auth 기반 소셜 로그인
+- **영화 검색** — TMDB API로 영화 검색
+- **영화 상세** — 포스터, 개봉일, 평점, 러닝타임, 장르, 줄거리 확인
+- **찜하기** — 관심 영화를 위시리스트에 등록/해제
+- **관람 기록** — 별점과 코멘트로 관람 기록 작성/수정
+- **홈 정렬** — 기록을 최신순/별점 높은순으로 정렬
+- **비로그인 접근 제어** — 찜/기록 버튼 클릭 시 로그인 팝업 유도, 기록 화면 직접 접근 시 홈으로 리다이렉트
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 기술 스택
 
-```js
-export default defineConfig([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
+- React 19 + TypeScript + Vite
+- Tailwind CSS v4
+- Firebase (Auth, Firestore)
+- TMDB API
+- TanStack Query
+- Zustand
+- 배포: Vercel
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## 실행 방법
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
+```bash
+npm install
+cp .env.example .env   # Firebase / TMDB 키 입력
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+| 명령어            | 설명                       |
+| ----------------- | -------------------------- |
+| `npm run dev`     | 개발 서버 실행             |
+| `npm run build`   | 타입 체크 후 프로덕션 빌드 |
+| `npm run lint`    | ESLint 검사                |
+| `npm run preview` | 빌드 결과 로컬 미리보기    |
 
-```js
-// eslint.config.js
-import reactX from "eslint-plugin-react-x";
-import reactDom from "eslint-plugin-react-dom";
-
-export default defineConfig([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs["recommended-typescript"],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
-```
+## <!-- ## 회고 / 배운 점 -->

@@ -47,8 +47,9 @@ export function Home() {
 
   if (!user) {
     return (
-      <div className="flex flex-1 flex-col items-center justify-center text-sm text-gray-400">
-        로그인이 필요합니다.
+      <div className="flex flex-1 flex-col gap-2 items-center justify-center text-sm text-gray-400">
+        <p>서비스 이용을 위해서는 로그인이 필요합니다.</p>
+        <p>로그인하고, 기록을 남겨보세요.</p>
       </div>
     );
   }
@@ -153,7 +154,7 @@ export function Home() {
               </div>
 
               {entry.comment && (
-                <p className="mt-3 text-sm leading-relaxed text-gray-300">
+                <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-gray-300 wrap-break-word">
                   {entry.comment}
                 </p>
               )}

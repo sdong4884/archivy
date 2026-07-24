@@ -1,14 +1,27 @@
-import { Link, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+import { signInWithPopup } from "firebase/auth";
 import { HeartIcon as HeartOutlineIcon } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartSolidIcon } from "@heroicons/react/24/solid";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import { getMovieDetail } from "../lib/api/tmdb";
 import { useWishlist } from "../hooks/useWishlist";
+import { auth, googleProvider } from "../lib/firebase";
+import { useAuthStore } from "../store/authStore";
 
 export function MovieDetail() {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const user = useAuthStore((state) => state.user);
   const { likedIds, toggleWishlist } = useWishlist();
+
+  const handleModifyClick = async () => {
+    if (!user) {
+      await signInWithPopup(auth, googleProvider);
+      return;
+    }
+    navigate(`/movie/${id}/modify`);
+  };
 
   const {
     data: movie,
@@ -82,13 +95,14 @@ export function MovieDetail() {
                   <HeartOutlineIcon className="h-6 w-6 text-white" />
                 )}
               </button>
-              <Link
-                to={`/movie/${id}/modify`}
+              <button
+                type="button"
+                onClick={handleModifyClick}
                 aria-label="기록하기"
                 className="cursor-pointer"
               >
                 <PencilSquareIcon className="h-6 w-6 text-white" />
-              </Link>
+              </button>
             </div>
           </div>
 

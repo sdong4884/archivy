@@ -1,5 +1,10 @@
 import { useRef, useState } from "react";
-import { useBlocker, useNavigate, useParams } from "react-router-dom";
+import {
+  Navigate,
+  useBlocker,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { StarIcon as StarOutlineIcon } from "@heroicons/react/24/outline";
 import { StarIcon as StarSolidIcon } from "@heroicons/react/24/solid";
@@ -32,7 +37,7 @@ export function MovieModify() {
   });
 
   if (!user) {
-    return <p className="text-sm text-gray-400">로그인이 필요합니다.</p>;
+    return <Navigate to="/" replace />;
   }
 
   if (!movie || isEntryLoading) {

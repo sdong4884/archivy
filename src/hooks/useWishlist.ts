@@ -1,4 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  skipToken,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "../lib/firebase";
 import { addToWishlist, getWishlist, removeFromWishlist } from "../lib/wishlist";
@@ -11,10 +16,13 @@ export function useWishlist() {
   const queryClient = useQueryClient();
   const showToast = useToastStore((state) => state.show);
 
-  const { data: wishlist, isLoading } = useQuery({
+  const {
+    data: wishlist,
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: ["wishlist", user?.uid],
-    queryFn: () => getWishlist(user!.uid),
-    enabled: !!user,
+    queryFn: user ? () => getWishlist(user.uid) : skipToken,
   });
 
   const likedIds = new Set((wishlist ?? []).map((item) => item.id));
@@ -53,5 +61,11 @@ export function useWishlist() {
     mutation.mutate({ movie, wasLiked: likedIds.has(movie.id) });
   };
 
-  return { wishlist: wishlist ?? [], isLoading, likedIds, toggleWishlist };
+  return {
+    wishlist: wishlist ?? [],
+    isLoading,
+    isError,
+    likedIds,
+    toggleWishlist,
+  };
 }

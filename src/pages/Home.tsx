@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { skipToken, useQuery } from "@tanstack/react-query";
 import { StarIcon } from "@heroicons/react/24/solid";
 import {
   ArchiveBoxXMarkIcon,
@@ -33,8 +33,7 @@ export function Home() {
     isError,
   } = useQuery({
     queryKey: ["entries", user?.uid],
-    queryFn: () => getEntries(user!.uid),
-    enabled: !!user,
+    queryFn: user ? () => getEntries(user.uid) : skipToken,
   });
 
   const [sortOption, setSortOption] = useState<SortOption>("latest");

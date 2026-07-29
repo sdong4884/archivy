@@ -5,7 +5,8 @@ import { MovieCard } from "../components/movie/MovieCard";
 
 export function Wishlist() {
   const user = useAuthStore((state) => state.user);
-  const { wishlist, isLoading, likedIds, toggleWishlist } = useWishlist();
+  const { wishlist, isLoading, isError, likedIds, toggleWishlist } =
+    useWishlist();
 
   if (!user) {
     return (
@@ -19,6 +20,14 @@ export function Wishlist() {
     return (
       <div className="flex flex-1 flex-col items-center justify-center text-sm text-gray-400">
         불러오는 중...
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="flex flex-1 flex-col items-center justify-center text-sm text-red-400">
+        찜 목록을 불러오지 못했습니다.
       </div>
     );
   }

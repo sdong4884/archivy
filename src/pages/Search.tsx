@@ -9,6 +9,7 @@ export function Search() {
   const [searchParams, setSearchParams] = useSearchParams();
   const initialQuery = searchParams.get("q") ?? "";
   const [query, setQuery] = useState(initialQuery);
+
   const [debouncedQuery, setDebouncedQuery] = useState(initialQuery);
   const { likedIds, toggleWishlist } = useWishlist();
 
@@ -49,7 +50,7 @@ export function Search() {
     if (!el) return;
 
     const observer = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting && !isFetchingNextPage) {
+      if (entries[0]?.isIntersecting && !isFetchingNextPage) {
         fetchNextPage();
       }
     });

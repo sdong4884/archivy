@@ -1,13 +1,10 @@
 import { Link } from "react-router-dom";
 import { HeartIcon as HeartOutlineIcon } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartSolidIcon } from "@heroicons/react/24/solid";
+import type { Movie } from "../../types/movie";
 
 interface MovieCardProps {
-  movie: {
-    id: number;
-    title: string;
-    posterUrl: string | null;
-  };
+  movie: Movie;
   isLiked: boolean;
   onToggleLike: () => void;
 }

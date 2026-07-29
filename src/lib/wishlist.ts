@@ -11,6 +11,12 @@ import {
 import { db } from "./firebase";
 import type { WishlistItem } from "../types/movie";
 
+interface WishlistItemDoc {
+  id: number;
+  title: string;
+  posterUrl: string | null;
+}
+
 function wishlistCollection(uid: string) {
   return collection(db, "users", uid, "wishlist");
 }
@@ -39,7 +45,7 @@ export async function getWishlist(uid: string): Promise<WishlistItem[]> {
     query(wishlistCollection(uid), orderBy("addedAt", "desc")),
   );
   return snapshot.docs.map((docSnapshot) => {
-    const data = docSnapshot.data();
+    const data = docSnapshot.data() as WishlistItemDoc;
     return {
       id: data.id,
       title: data.title,

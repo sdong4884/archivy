@@ -11,6 +11,14 @@ import {
 import { db } from "./firebase";
 import type { Entry } from "../types/movie";
 
+interface EntryDoc {
+  id: number;
+  title: string;
+  posterUrl: string | null;
+  rating: number;
+  comment: string;
+}
+
 function entriesCollection(uid: string) {
   return collection(db, "users", uid, "entries");
 }
@@ -24,7 +32,7 @@ export async function getEntries(uid: string): Promise<Entry[]> {
     query(entriesCollection(uid), orderBy("updatedAt", "desc")),
   );
   return snapshot.docs.map((docSnapshot) => {
-    const data = docSnapshot.data();
+    const data = docSnapshot.data() as EntryDoc;
     return {
       id: data.id,
       title: data.title,
@@ -42,7 +50,7 @@ export async function getEntry(
   const snapshot = await getDoc(entryDoc(uid, movieId));
   if (!snapshot.exists()) return null;
 
-  const data = snapshot.data();
+  const data = snapshot.data() as EntryDoc;
   return {
     id: data.id,
     title: data.title,

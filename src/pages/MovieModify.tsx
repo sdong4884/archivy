@@ -5,7 +5,7 @@ import {
   useNavigate,
   useParams,
 } from "react-router-dom";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { skipToken, useQuery, useQueryClient } from "@tanstack/react-query";
 import { StarIcon as StarOutlineIcon } from "@heroicons/react/24/outline";
 import { StarIcon as StarSolidIcon } from "@heroicons/react/24/solid";
 import { getMovieDetail } from "../lib/api/tmdb";
@@ -32,8 +32,7 @@ export function MovieModify() {
 
   const { data: existingEntry, isLoading: isEntryLoading } = useQuery({
     queryKey: ["entry", user?.uid, movieId],
-    queryFn: () => getEntry(user!.uid, movieId),
-    enabled: !!user,
+    queryFn: user ? () => getEntry(user.uid, movieId) : skipToken,
   });
 
   if (!user) {

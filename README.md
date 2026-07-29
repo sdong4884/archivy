@@ -6,6 +6,9 @@
 
 🔗 https://archivy-delta.vercel.app/
 
+## 블로그
+✏️ https://velog.io/@sdong/TMDB-API와-Firebase를-활용한-영화-검색기록-앱
+
 <!-- 스크린샷 추가: 홈/검색/상세/찜 목록 화면 캡처를 여기에 삽입하세요 -->
 
 ## 주요 기능

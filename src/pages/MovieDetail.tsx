@@ -55,7 +55,7 @@ export function MovieDetail() {
         </div>
       )}
 
-      <div className="relative mx-auto flex max-w-[1000px] flex-col gap-6 p-6 sm:flex-row sm:p-10 lg:px-16">
+      <div className="relative mx-auto flex w-full max-w-[1280px] flex-col gap-6 px-4 py-6 sm:flex-row sm:py-10">
         <div className="w-40 shrink-0 self-center sm:w-70 sm:self-start">
           <div className="aspect-2/3 overflow-hidden rounded-lg bg-gray-800 shadow-lg">
             {movie.posterUrl ? (
@@ -72,7 +72,7 @@ export function MovieDetail() {
           </div>
         </div>
 
-        <div className="min-w-0 flex-1 text-white">
+        <div className="min-w-0 flex-1 py-2 text-white">
           <div className="flex items-start justify-between gap-3">
             <h1 className="text-2xl font-semibold sm:text-3xl">
               {movie.title}
@@ -106,20 +106,20 @@ export function MovieDetail() {
             </div>
           </div>
 
-          <div className="mt-4 flex flex-wrap gap-x-6 gap-y-1 text-sm text-gray-300">
+          <div className="mt-4 flex flex-wrap gap-x-6 gap-y-1 text-md text-gray-300">
             {movie.releaseDate && <span>개봉일 | {movie.releaseDate}</span>}
             <span>평점 | {movie.voteAverage.toFixed(1)}</span>
             {movie.runtime > 0 && <span>러닝타임 | {movie.runtime}분</span>}
           </div>
 
           {movie.genres.length > 0 && (
-            <div className="mt-1 text-sm text-gray-300">
+            <div className="mt-1 text-md text-gray-300">
               장르 | {movie.genres.join(" / ")}
             </div>
           )}
 
           {movie.tagline && (
-            <blockquote className="mt-8 text-center text-lg font-medium text-gray-100 italic">
+            <blockquote className="mt-16 text-lg font-medium text-gray-100 italic">
               <span className="mr-1 font-serif text-2xl not-italic text-gray-400">
                 &ldquo;
               </span>
@@ -131,7 +131,7 @@ export function MovieDetail() {
           )}
 
           {movie.overview && (
-            <p className="mt-8 text-sm leading-relaxed text-gray-300">
+            <p className="mt-8 text-md break-keep leading-relaxed text-gray-300">
               {movie.overview}
             </p>
           )}

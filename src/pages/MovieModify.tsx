@@ -101,7 +101,7 @@ function MovieModifyForm({ uid, movie, existingEntry }: MovieModifyFormProps) {
   };
 
   return (
-    <div className="mx-auto w-full max-w-lg">
+    <div className="mx-auto w-full max-w-[1280px]">
       <div className="flex items-center gap-4">
         <div className="w-24 shrink-0 overflow-hidden rounded bg-gray-800">
           {movie.posterUrl ? (

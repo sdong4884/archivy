@@ -79,7 +79,7 @@ export function Home() {
   }
 
   return (
-    <div>
+    <div className="mx-auto w-full max-w-[1280px]">
       <div className="mb-4 inline-flex rounded-lg border border-gray-800 bg-gray-800/50 p-1">
         <button
           type="button"
@@ -105,7 +105,7 @@ export function Home() {
         </button>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
         {(sortedEntries ?? []).map((entry) => (
           <div
             key={entry.id}

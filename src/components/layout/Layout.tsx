@@ -41,55 +41,57 @@ export function Layout() {
 
   return (
     <div className="flex min-h-screen flex-col bg-gray-900 text-gray-100">
-      <header className="relative z-20 flex shrink-0 items-center justify-between border-b border-gray-800 px-4 py-4">
-        <Link to="/" className="flex items-center gap-2">
-          <ArchiveBoxIcon className="h-6 w-6" />
-          <span className="text-xl font-semibold">Archivy</span>
-        </Link>
-
-        <div className="flex items-center gap-4">
-          <Link to="/search" aria-label="검색">
-            <MagnifyingGlassIcon className="h-6 w-6" />
+      <header className="relative z-20 flex shrink-0 border-b border-gray-800 px-4 py-4">
+        <div className="mx-auto flex w-full max-w-[1280px] items-center justify-between">
+          <Link to="/" className="flex items-center gap-2">
+            <ArchiveBoxIcon className="h-6 w-6" />
+            <span className="text-xl font-semibold">Archivy</span>
           </Link>
 
-          {user ? (
-            <div className="relative flex" ref={menuRef}>
+          <div className="flex items-center gap-4">
+            <Link to="/search" aria-label="검색">
+              <MagnifyingGlassIcon className="h-6 w-6" />
+            </Link>
+
+            {user ? (
+              <div className="relative flex" ref={menuRef}>
+                <button
+                  onClick={() => setIsMenuOpen((open) => !open)}
+                  className="cursor-pointer"
+                >
+                  <img
+                    src={user.photoURL ?? undefined}
+                    alt={user.displayName ?? "사용자"}
+                    className="h-8 w-8 rounded-full"
+                  />
+                </button>
+                {isMenuOpen && (
+                  <div className="absolute right-0 mt-2 w-36 rounded border border-gray-700 bg-gray-800 shadow-md">
+                    <button
+                      onClick={handleLogout}
+                      className="w-full cursor-pointer px-4 py-2 text-left text-sm hover:bg-gray-700"
+                    >
+                      로그아웃
+                    </button>
+                    <Link
+                      to="/wishlist"
+                      onClick={() => setIsMenuOpen(false)}
+                      className="block w-full cursor-pointer px-4 py-2 text-left text-sm hover:bg-gray-700"
+                    >
+                      찜 목록
+                    </Link>
+                  </div>
+                )}
+              </div>
+            ) : (
               <button
-                onClick={() => setIsMenuOpen((open) => !open)}
-                className="cursor-pointer"
+                onClick={handleGoogleLogin}
+                className="cursor-pointer rounded border border-gray-700 px-3 py-1.5 text-sm font-medium hover:bg-gray-800"
               >
-                <img
-                  src={user.photoURL ?? undefined}
-                  alt={user.displayName ?? "사용자"}
-                  className="h-8 w-8 rounded-full"
-                />
+                로그인
               </button>
-              {isMenuOpen && (
-                <div className="absolute right-0 mt-2 w-36 rounded border border-gray-700 bg-gray-800 shadow-md">
-                  <button
-                    onClick={handleLogout}
-                    className="w-full cursor-pointer px-4 py-2 text-left text-sm hover:bg-gray-700"
-                  >
-                    로그아웃
-                  </button>
-                  <Link
-                    to="/wishlist"
-                    onClick={() => setIsMenuOpen(false)}
-                    className="block w-full cursor-pointer px-4 py-2 text-left text-sm hover:bg-gray-700"
-                  >
-                    찜 목록
-                  </Link>
-                </div>
-              )}
-            </div>
-          ) : (
-            <button
-              onClick={handleGoogleLogin}
-              className="cursor-pointer rounded border border-gray-700 px-3 py-1.5 text-sm font-medium hover:bg-gray-800"
-            >
-              로그인
-            </button>
-          )}
+            )}
+          </div>
         </div>
       </header>
       <main className="flex flex-1 flex-col p-4">

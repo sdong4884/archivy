@@ -42,7 +42,7 @@ export function Wishlist() {
   }
 
   return (
-    <div className="grid grid-cols-[repeat(auto-fill,minmax(210px,1fr))] gap-6">
+    <div className="mx-auto w-full max-w-[1280px] grid grid-cols-[repeat(auto-fill,minmax(210px,1fr))] gap-6">
       {wishlist.map((movie) => (
         <MovieCard
           key={movie.id}

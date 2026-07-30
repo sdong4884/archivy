@@ -59,7 +59,7 @@ export function Search() {
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   return (
-    <>
+    <div className="mx-auto w-full max-w-[1280px]">
       <input
         type="text"
         value={query}
@@ -95,6 +95,6 @@ export function Search() {
         <p className="mt-6 text-sm text-gray-400">불러오는 중...</p>
       )}
       <div ref={sentinelRef} />
-    </>
+    </div>
   );
 }

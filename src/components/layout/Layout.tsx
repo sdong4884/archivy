@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import {
   ArchiveBoxIcon,
@@ -93,7 +93,15 @@ export function Layout() {
         </div>
       </header>
       <main className="flex flex-1 flex-col p-4">
-        <Outlet />
+        <Suspense
+          fallback={
+            <div className="flex flex-1 flex-col items-center justify-center text-sm text-gray-400">
+              불러오는 중...
+            </div>
+          }
+        >
+          <Outlet />
+        </Suspense>
       </main>
       <Toast />
     </div>

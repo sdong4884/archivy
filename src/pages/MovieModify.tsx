@@ -19,6 +19,7 @@ export function MovieModify() {
   const { id } = useParams();
   const movieId = Number(id);
   const user = useAuthStore((state) => state.user);
+  const isAuthLoading = useAuthStore((state) => state.isLoading);
 
   const { data: movie } = useQuery({
     queryKey: ["movie", id],
@@ -29,6 +30,10 @@ export function MovieModify() {
     queryKey: ["entry", user?.uid, movieId],
     queryFn: user ? () => getEntry(user.uid, movieId) : skipToken,
   });
+
+  if (isAuthLoading) {
+    return <p className="text-sm text-gray-400">불러오는 중...</p>;
+  }
 
   if (!user) {
     return <Navigate to="/" replace />;

@@ -1,15 +1,10 @@
 import { useRef, useState } from "react";
-import {
-  Navigate,
-  useBlocker,
-  useNavigate,
-  useParams,
-} from "react-router-dom";
+import { Navigate, useBlocker, useNavigate, useParams } from "react-router-dom";
 import { skipToken, useQuery, useQueryClient } from "@tanstack/react-query";
 import { StarIcon as StarOutlineIcon } from "@heroicons/react/24/outline";
 import { StarIcon as StarSolidIcon } from "@heroicons/react/24/solid";
 import { getMovieDetail } from "../lib/api/tmdb";
-import { getEntry, saveEntry } from "../lib/entries";
+import { deleteEntry, getEntry, saveEntry } from "../lib/entries";
 import { useAuthStore } from "../store/authStore";
 import { useToastStore } from "../store/toastStore";
 import { ConfirmModal } from "../components/ui/ConfirmModal";
@@ -17,7 +12,7 @@ import type { Entry, MovieDetail } from "../types/movie";
 
 function clampRating(value: number): number {
   if (Number.isNaN(value)) return 0;
-  return Math.round(Math.min(Math.max(value, 0), 5) * 10) / 10;
+  return Math.round(Math.min(Math.max(value, 0), 5));
 }
 
 export function MovieModify() {
@@ -44,7 +39,11 @@ export function MovieModify() {
   }
 
   return (
-    <MovieModifyForm uid={user.uid} movie={movie} existingEntry={existingEntry ?? null} />
+    <MovieModifyForm
+      uid={user.uid}
+      movie={movie}
+      existingEntry={existingEntry ?? null}
+    />
   );
 }
 
@@ -67,6 +66,7 @@ function MovieModifyForm({ uid, movie, existingEntry }: MovieModifyFormProps) {
   const [rating, setRating] = useState(initial.rating);
   const [comment, setComment] = useState(initial.comment);
   const [isSaveConfirmOpen, setIsSaveConfirmOpen] = useState(false);
+  const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
   // ref(값이 바뀔 때 리렌더를 유발할 필요가 없고, useBlocker의 판단 함수가
   // 항상 "가장 최근에 저장된 값"을 즉시 읽을 수 있어야 하므로 state 대신 ref 사용)
   const savedInitialRef = useRef(initial);
@@ -100,6 +100,21 @@ function MovieModifyForm({ uid, movie, existingEntry }: MovieModifyFormProps) {
     navigate("/");
   };
 
+  const handleDelete = async () => {
+    try {
+      await deleteEntry(uid, movie.id);
+    } catch {
+      setIsDeleteConfirmOpen(false);
+      showToast("기록 삭제에 실패했습니다.");
+      return;
+    }
+    queryClient.invalidateQueries({ queryKey: ["entries", uid] });
+    savedInitialRef.current = { rating, comment };
+    setIsDeleteConfirmOpen(false);
+    showToast("기록이 삭제되었습니다.");
+    navigate("/");
+  };
+
   return (
     <div className="mx-auto w-full max-w-[1280px]">
       <div className="flex items-center gap-4">
@@ -117,9 +132,7 @@ function MovieModifyForm({ uid, movie, existingEntry }: MovieModifyFormProps) {
           )}
         </div>
         <div>
-          <h1 className="text-xl font-semibold text-gray-100">
-            {movie.title}
-          </h1>
+          <h1 className="text-xl font-semibold text-gray-100">{movie.title}</h1>
           {movie.genres.length > 0 && (
             <p className="mt-1 text-sm text-gray-400">
               {movie.genres.join(" / ")}
@@ -129,16 +142,20 @@ function MovieModifyForm({ uid, movie, existingEntry }: MovieModifyFormProps) {
       </div>
 
       <div className="mt-8">
-        <label className="block text-sm font-medium text-gray-300">
-          별점
-        </label>
+        <label className="block text-sm font-medium text-gray-300">별점</label>
         <div className="mt-2 flex items-center gap-3">
           <div className="flex gap-0.5">
             {[1, 2, 3, 4, 5].map((star) => {
               const fillPercent =
                 Math.min(Math.max(rating - (star - 1), 0), 1) * 100;
               return (
-                <div key={star} className="relative h-7 w-7">
+                <button
+                  key={star}
+                  type="button"
+                  onClick={() => setRating(star)}
+                  aria-label={`${star}점`}
+                  className="relative h-7 w-7 cursor-pointer"
+                >
                   <StarOutlineIcon className="absolute inset-0 h-7 w-7 text-gray-600" />
                   <div
                     className="absolute inset-0 overflow-hidden"
@@ -146,13 +163,13 @@ function MovieModifyForm({ uid, movie, existingEntry }: MovieModifyFormProps) {
                   >
                     <StarSolidIcon className="h-7 w-7 text-yellow-400" />
                   </div>
-                </div>
+                </button>
               );
             })}
           </div>
           <input
             type="number"
-            step={0.1}
+            step={1}
             min={0}
             max={5}
             value={rating}
@@ -178,19 +195,29 @@ function MovieModifyForm({ uid, movie, existingEntry }: MovieModifyFormProps) {
         />
       </div>
 
-      <div className="mt-8 flex justify-end gap-3">
-        <button
-          onClick={() => navigate(-1)}
-          className="cursor-pointer rounded border border-gray-700 px-4 py-2 text-sm font-medium hover:bg-gray-800"
-        >
-          취소
-        </button>
-        <button
-          onClick={() => setIsSaveConfirmOpen(true)}
-          className="cursor-pointer rounded bg-gray-100 px-4 py-2 text-sm font-medium text-gray-900 hover:bg-white"
-        >
-          저장
-        </button>
+      <div className="mt-8 flex items-center justify-between gap-3">
+        {existingEntry && (
+          <button
+            onClick={() => setIsDeleteConfirmOpen(true)}
+            className="cursor-pointer rounded bg-red-800 px-4 py-2 text-sm font-medium text-gray-100 hover:bg-red-900"
+          >
+            삭제
+          </button>
+        )}
+        <div className="ml-auto flex gap-3">
+          <button
+            onClick={() => navigate(-1)}
+            className="cursor-pointer rounded border border-gray-700 px-4 py-2 text-sm font-medium hover:bg-gray-800"
+          >
+            취소
+          </button>
+          <button
+            onClick={() => setIsSaveConfirmOpen(true)}
+            className="cursor-pointer rounded bg-gray-100 px-4 py-2 text-sm font-medium text-gray-900 hover:bg-white"
+          >
+            저장
+          </button>
+        </div>
       </div>
 
       <ConfirmModal
@@ -205,6 +232,13 @@ function MovieModifyForm({ uid, movie, existingEntry }: MovieModifyFormProps) {
         message="기록을 저장하시겠습니까?"
         onConfirm={handleSave}
         onCancel={() => setIsSaveConfirmOpen(false)}
+      />
+
+      <ConfirmModal
+        open={isDeleteConfirmOpen}
+        message={"기록을 삭제하시겠습니까?\n삭제된 기록은 복구가 어렵습니다."}
+        onConfirm={handleDelete}
+        onCancel={() => setIsDeleteConfirmOpen(false)}
       />
     </div>
   );

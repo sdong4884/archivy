@@ -149,7 +149,7 @@ export function Home() {
                 className={`mt-2 inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-xs font-medium ${ratingBadgeClasses(entry.rating)}`}
               >
                 <StarIcon className="h-3.5 w-3.5" />
-                <span>{entry.rating.toFixed(1)}</span>
+                <span>{entry.rating}</span>
               </div>
 
               {entry.comment && (

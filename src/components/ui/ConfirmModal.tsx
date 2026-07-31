@@ -16,7 +16,7 @@ export function ConfirmModal({
   return (
     <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/70 px-4">
       <div className="w-full max-w-sm rounded-lg border border-gray-700 bg-gray-800 p-6 shadow-lg">
-        <p className="text-sm text-gray-100">{message}</p>
+        <p className="text-sm whitespace-pre-line text-gray-100">{message}</p>
         <div className="mt-6 flex justify-end gap-3">
           <button
             onClick={onCancel}

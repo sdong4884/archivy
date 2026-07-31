@@ -1,5 +1,6 @@
 import {
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -69,4 +70,8 @@ export async function saveEntry(uid: string, entry: Entry): Promise<void> {
     comment: entry.comment,
     updatedAt: serverTimestamp(),
   });
+}
+
+export async function deleteEntry(uid: string, movieId: number): Promise<void> {
+  await deleteDoc(entryDoc(uid, movieId));
 }

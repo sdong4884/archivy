@@ -8,6 +8,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { getEntries } from "../lib/entries";
 import { useAuthStore } from "../store/authStore";
+import { LoadingIndicator } from "../components/ui/LoadingIndicator";
 
 type SortOption = "latest" | "ratingDesc";
 
@@ -54,11 +55,7 @@ export function Home() {
   }
 
   if (isLoading) {
-    return (
-      <div className="flex flex-1 flex-col items-center justify-center text-sm text-gray-400">
-        불러오는 중...
-      </div>
-    );
+    return <LoadingIndicator />;
   }
 
   if (isError) {

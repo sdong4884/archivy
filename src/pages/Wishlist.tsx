@@ -2,6 +2,7 @@ import { ArchiveBoxXMarkIcon } from "@heroicons/react/24/outline";
 import { useAuthStore } from "../store/authStore";
 import { useWishlist } from "../hooks/useWishlist";
 import { MovieCard } from "../components/movie/MovieCard";
+import { LoadingIndicator } from "../components/ui/LoadingIndicator";
 
 export function Wishlist() {
   const user = useAuthStore((state) => state.user);
@@ -17,11 +18,7 @@ export function Wishlist() {
   }
 
   if (isLoading) {
-    return (
-      <div className="flex flex-1 flex-col items-center justify-center text-sm text-gray-400">
-        불러오는 중...
-      </div>
-    );
+    return <LoadingIndicator />;
   }
 
   if (isError) {

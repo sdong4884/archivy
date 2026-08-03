@@ -4,6 +4,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { searchMovies } from "../lib/api/tmdb";
 import { useWishlist } from "../hooks/useWishlist";
 import { MovieCard } from "../components/movie/MovieCard";
+import { LoadingIndicator } from "../components/ui/LoadingIndicator";
 
 export function Search() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -68,7 +69,11 @@ export function Search() {
         className="w-full rounded border border-gray-700 bg-gray-800 px-4 py-2.5 text-sm text-gray-100 placeholder:text-gray-500 focus:border-gray-500 focus:outline-none"
       />
 
-      {isLoading && <p className="mt-6 text-sm text-gray-400">검색 중...</p>}
+      {isLoading && (
+        <p className="flex items-center justify-center mt-6 text-sm text-gray-400">
+          검색 중...
+        </p>
+      )}
       {isError && (
         <p className="mt-6 text-sm text-red-400">검색에 실패했습니다.</p>
       )}
@@ -91,9 +96,7 @@ export function Search() {
         </div>
       )}
 
-      {isFetchingNextPage && (
-        <p className="mt-6 text-sm text-gray-400">불러오는 중...</p>
-      )}
+      {isFetchingNextPage && <LoadingIndicator className="mt-6" />}
       <div ref={sentinelRef} />
     </div>
   );

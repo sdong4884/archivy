@@ -7,6 +7,7 @@ import {
 import { signInWithPopup, signOut } from "firebase/auth";
 import { auth, googleProvider } from "../../lib/firebase";
 import { useAuthStore } from "../../store/authStore";
+import { LoadingIndicator } from "../ui/LoadingIndicator";
 import { Toast } from "../ui/Toast";
 
 export function Layout() {
@@ -95,13 +96,7 @@ export function Layout() {
         </div>
       </header>
       <main className="flex flex-1 flex-col p-4">
-        <Suspense
-          fallback={
-            <div className="flex flex-1 flex-col items-center justify-center text-sm text-gray-400">
-              불러오는 중...
-            </div>
-          }
-        >
+        <Suspense fallback={<LoadingIndicator />}>
           <Outlet />
         </Suspense>
       </main>

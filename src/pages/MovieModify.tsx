@@ -8,6 +8,7 @@ import { deleteEntry, getEntry, saveEntry } from "../lib/entries";
 import { useAuthStore } from "../store/authStore";
 import { useToastStore } from "../store/toastStore";
 import { ConfirmModal } from "../components/ui/ConfirmModal";
+import { LoadingIndicator } from "../components/ui/LoadingIndicator";
 import type { Entry, MovieDetail } from "../types/movie";
 
 function clampRating(value: number): number {
@@ -32,7 +33,7 @@ export function MovieModify() {
   });
 
   if (isAuthLoading) {
-    return <p className="text-sm text-gray-400">불러오는 중...</p>;
+    return <LoadingIndicator />;
   }
 
   if (!user) {
@@ -40,7 +41,7 @@ export function MovieModify() {
   }
 
   if (!movie || isEntryLoading) {
-    return <p className="text-sm text-gray-400">불러오는 중...</p>;
+    return <LoadingIndicator />;
   }
 
   return (

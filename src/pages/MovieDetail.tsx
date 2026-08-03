@@ -8,6 +8,7 @@ import { getMovieDetail } from "../lib/api/tmdb";
 import { useWishlist } from "../hooks/useWishlist";
 import { auth, googleProvider } from "../lib/firebase";
 import { useAuthStore } from "../store/authStore";
+import { LoadingIndicator } from "../components/ui/LoadingIndicator";
 
 export function MovieDetail() {
   const { id } = useParams();
@@ -33,12 +34,14 @@ export function MovieDetail() {
   });
 
   if (isLoading) {
-    return <p className="text-sm text-gray-400">불러오는 중...</p>;
+    return <LoadingIndicator />;
   }
 
   if (isError || !movie) {
     return (
-      <p className="text-sm text-red-400">영화 정보를 불러오지 못했습니다.</p>
+      <p className="flex flex-1 items-center justify-center text-sm text-red-400">
+        영화 정보를 불러오지 못했습니다.
+      </p>
     );
   }
 

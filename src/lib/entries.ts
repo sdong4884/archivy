@@ -62,6 +62,9 @@ export async function getEntry(
 }
 
 export async function saveEntry(uid: string, entry: Entry): Promise<void> {
+  if (entry.rating <= 0 || entry.comment.trim().length === 0) {
+    throw new Error("별점과 코멘트는 필수입니다.");
+  }
   await setDoc(entryDoc(uid, entry.id), {
     id: entry.id,
     title: entry.title,

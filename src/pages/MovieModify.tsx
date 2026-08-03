@@ -72,9 +72,13 @@ function MovieModifyForm({ uid, movie, existingEntry }: MovieModifyFormProps) {
   const [comment, setComment] = useState(initial.comment);
   const [isSaveConfirmOpen, setIsSaveConfirmOpen] = useState(false);
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
-  // ref(값이 바뀔 때 리렌더를 유발할 필요가 없고, useBlocker의 판단 함수가
-  // 항상 "가장 최근에 저장된 값"을 즉시 읽을 수 있어야 하므로 state 대신 ref 사용)
+  // ref(navigate() 직전에 동기적으로 갱신해야 useBlocker가 최신 값을 즉시
+  // 읽을 수 있음 — state로 하면 navigate()가 리렌더보다 먼저 실행되어 블로커가
+  // 저장 직후에도 "변경됨"으로 오판해 이탈 확인 모달이 뜬다)
   const savedInitialRef = useRef(initial);
+
+  const isDirty = rating !== initial.rating || comment !== initial.comment;
+  const isValid = rating > 0 && comment.trim().length > 0;
 
   const blocker = useBlocker(
     ({ currentLocation, nextLocation }) =>
@@ -82,6 +86,14 @@ function MovieModifyForm({ uid, movie, existingEntry }: MovieModifyFormProps) {
         comment !== savedInitialRef.current.comment) &&
       currentLocation.pathname !== nextLocation.pathname,
   );
+
+  const handleSaveClick = () => {
+    if (!isValid) {
+      showToast("항목을 모두 입력해주세요.");
+      return;
+    }
+    setIsSaveConfirmOpen(true);
+  };
 
   const handleSave = async () => {
     const entry: Entry = {
@@ -217,8 +229,9 @@ function MovieModifyForm({ uid, movie, existingEntry }: MovieModifyFormProps) {
             취소
           </button>
           <button
-            onClick={() => setIsSaveConfirmOpen(true)}
-            className="cursor-pointer rounded bg-gray-100 px-4 py-2 text-sm font-medium text-gray-900 hover:bg-white"
+            disabled={existingEntry !== null && !isDirty}
+            onClick={handleSaveClick}
+            className="cursor-pointer rounded bg-gray-100 px-4 py-2 text-sm font-medium text-gray-900 hover:bg-white disabled:cursor-not-allowed disabled:bg-gray-700 disabled:text-gray-500 disabled:hover:bg-gray-700"
           >
             저장
           </button>
